@@ -1,0 +1,35 @@
+{
+	"bd": {
+		"hote": "localhost",
+		"port": "3306",
+		"base": "tb_cel",
+		"login": "",
+		"mdp": ""
+	},
+	"indicateurs": {
+		"obspub": {
+			"config": [
+				"graph_name Machin chose en bois",
+				"graph_title pouet",
+				"graph_vlabel tralala"
+			],
+			"series": {
+				"nombre": {
+					"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1"
+				}
+			}
+		},
+		"pbdate": {
+			"config": [
+				"graph_name Machin chose en bois",
+				"graph_title pouet",
+				"graph_vlabel tralala"
+			],
+			"series": {
+				"nombre": {
+					"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND date_transmission < date_observation"
+				}
+			}
+		}
+	}
+}
