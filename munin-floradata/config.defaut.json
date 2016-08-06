@@ -31,6 +31,9 @@
 			"series": {
 				"nombre": {
 					"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND date_transmission < date_observation"
+				},
+				"total": {
+					"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1"
 				}
 			}
 		}
