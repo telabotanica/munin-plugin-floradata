@@ -35,16 +35,55 @@ if ($argc > 1 && $argv[1] == 'config') {
 	exit(0);
 }
 
-// récupération des données
-$dsn = 'mysql:host=' . $config['bd']['hote'] . ';dbname=' . $config['bd']['base'] . ';port=' . $config['bd']['port'];
-$bd = new PDO($dsn, $config['bd']['login'], $config['bd']['mdp']);
+// dossier de cache pour la temporisation
+$dossierCache = $config['cache'];
+if (!is_dir($dossierCache) || !is_writable($dossierCache)) {
+	erreur("dossier cache inexistant ou pas le droit d'écrire dedans");
+}
+// intervalle plus grand que les 300 secondes de Munin < 2.0 ?
+$intervalle = false;
+if (! empty($indic['intervalle'])) {
+	$intervalle = $indic['intervalle'];
+}
+
+// si un intervalle a été défini, on vérifie la date de dernière écriture du cache
+$recalculer = ($intervalle === false || cacheObsolete($nomIndicateur, $intervalle));
+
+// connexion à la base de données si nécessaire
+$bd = false;
+if ($recalculer) {
+	$dsn = 'mysql:host=' . $config['bd']['hote'] . ';dbname=' . $config['bd']['base'] . ';port=' . $config['bd']['port'];
+	$bd = new PDO($dsn, $config['bd']['login'], $config['bd']['mdp']);
+}
 
 // boucle sur les séries
 foreach ($indic['series'] as $nomSerie => $serie) {
-	$q = $serie["requete"];
-	$res = $bd->query($q);
-	$ligne = $res->fetch();
-	echo $nomSerie . '.data ' . $ligne['val'] . PHP_EOL;
+	$val = false;
+	if ($recalculer) {	
+		// exécution de la requête
+		$q = $serie["requete"];
+		$res = $bd->query($q);
+		$ligne = $res->fetch();
+		$val = $ligne['val'];
+		// écriture du cache
+	} else {
+		// lecture dans le cache
+	}
+	echo $nomSerie . '.data ' . $val . PHP_EOL;
+}
+
+/** retourne true si la date de dernière écriture du fichier de cache pour
+	l'indicateur donné est plus vieille que l'intervalle demandé */
+function cacheObsolete($nomIndicateur, $intervalle) {
+	$fichierCache = calculerNomFichierCache($nomIndicateur);
+	// @TODO lire les stats du fichier
+	return true;
+}
+
+/** renvoie l'emplacement du fichier de cache correspondant à l'indicateur donné */
+function calculerNomFichierCache($nomIndicateur) {
+	// @TODO
+	return false;
 }
 
 /** écrit un message d'erreur sur la sortie d'erreur et quitte le programme

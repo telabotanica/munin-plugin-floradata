@@ -6,8 +6,10 @@
 		"login": "",
 		"mdp": ""
 	},
+	"cache": "/tmp",
 	"indicateurs": {
 		"obspub": {
+			"intervalle": "3600",
 			"config": [
 				"graph_name Machin chose en bois",
 				"graph_title pouet",
@@ -20,6 +22,7 @@
 			}
 		},
 		"pbdate": {
+			"intervalle": "3600",
 			"config": [
 				"graph_name Machin chose en bois",
 				"graph_title pouet",
