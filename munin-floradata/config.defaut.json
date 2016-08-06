@@ -24,16 +24,19 @@
 		"pbdate": {
 			"intervalle": "3600",
 			"config": [
-				"graph_name Machin chose en bois",
+				"graph_vlabel nombre"
 				"graph_title pouet",
-				"graph_vlabel tralala"
 			],
 			"series": {
 				"nombre": {
-					"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND date_transmission < date_observation"
+					"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND date_transmission < date_observation",
+					"label": "obs pbdate",
+					"info": "Obs ayant date_transmission < date_observation"
 				},
 				"total": {
-					"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1"
+					"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1",
+					"label": "obs total",
+					"info": "Toutes les obs"
 				}
 			}
 		}

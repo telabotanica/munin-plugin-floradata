@@ -1,4 +1,4 @@
-#!/usr/bin/env php
+#!/usr/local/php/5.5/bin/php
 <?php
 
 // lecture de la configuration
@@ -30,6 +30,15 @@ $indic = $indicateurs[$nomIndicateur];
 if ($argc > 1 && $argv[1] == 'config') {
 	$configIndic = $indic['config'];
 	array_unshift($configIndic, "graph_category floradata");
+	// séries
+	foreach ($indic['series'] as $nomSerie => $serie) {
+		foreach ($serie as $prop => $val) {
+			if ($prop != "requete") {
+				$configIndic[] = $nomSerie . '.' . $prop . ' ' . $val;
+			}
+		}
+	}
+	// sortie
 	$configIndic[] = ''; // pour ajouter un EOL à la fin
 	echo implode(PHP_EOL, $configIndic);
 	exit(0);
