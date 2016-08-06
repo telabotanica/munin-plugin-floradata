@@ -73,7 +73,7 @@ if ($recalculer) {
 		$ligne = $res->fetch();
 		$val = $ligne['val'];
 		// ajout de la série aux valeurs de l'indicateur
-		$valeurs .= $nomSerie . '.data ' . $val . PHP_EOL;
+		$valeurs .= $nomSerie . '.value ' . $val . PHP_EOL;
 	}
 	// écriture du cache
 	ecrireCache($nomIndicateur, $valeurs);
