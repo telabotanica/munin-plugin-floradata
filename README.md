@@ -30,7 +30,7 @@ Lorsque ça fonctionne, relancer le nœud Munin :
 ```
 et attendre patiemment que ça graphe !
 
-## temps d'exécution
+## Temps d'exécution
 Par défaut Munin interrompt une sonde au bout de 10 secondes.
 Si les requêtes choisies prennent plus de 10 secondes à s'exécuter, ce qui est fort probable, ajouter un fichier de configuration dans `/etc/munin/plugin-conf.d`, par exemple `floradata.conf`, et y placer le contenu suivant :
 ```
