@@ -12,6 +12,8 @@ Le cache est configuré dans `config.json`; s'assurer que le dossier renseigné 
 
 Chaque **série** possède une configuration propre (nom court, nom détaillé, type de ligne à tracer), et une **requête**.
 
+Une **série** dont le nom (clef JSON) commence par `_` (underscore) sera ignorée.
+
 Chaque **requête** doit retourner un nombre sous l'intitulé `val`, du genre `SELECT count(*) AS val (...) `
 
 Pour lire un indicateur, créer un **lien symbolique** vers `munin-floradata.php` portant le nom `floradata_nomdelindicateur`. Des exemples sont livrés.
