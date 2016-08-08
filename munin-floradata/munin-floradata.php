@@ -1,4 +1,4 @@
-#!/usr/local/php/5.5/bin/php
+#!/usr/bin/env php
 <?php
 
 // lecture de la configuration
@@ -8,7 +8,14 @@ if (!file_exists($fichierConfig)) {
 }
 $config = json_decode(file_get_contents($fichierConfig), true);
 //var_dump($config);
-$indicateurs = $config['indicateurs'];
+
+// lecture des indicateurs
+$fichierIndicateurs = __DIR__ . "/indicateurs.json";
+if (!file_exists($fichierIndicateurs)) {
+	erreur("fichier indicateurs manquant");
+}
+$indicateurs = json_decode(file_get_contents($fichierIndicateurs), true);
+//var_dump($indicateurs);
 
 // décodage du nom de l'indicateur depuis le lien
 $nomScript = $argv[0];
@@ -30,10 +37,11 @@ $indic = $indicateurs[$nomIndicateur];
 if ($argc > 1 && $argv[1] == 'config') {
 	$configIndic = $indic['config'];
 	array_unshift($configIndic, "graph_category floradata");
-	// séries
+	// config pour chaque série
 	foreach ($indic['series'] as $nomSerie => $serie) {
-		foreach ($serie as $prop => $val) {
-			if ($prop != "requete") {
+		if (serieDesactivee($nomSerie)) continue;
+		if (! empty($serie["config"])) {
+			foreach ($serie["config"] as $prop => $val) {
 				$configIndic[] = $nomSerie . '.' . $prop . ' ' . $val;
 			}
 		}
@@ -65,6 +73,7 @@ if ($recalculer) {
 	$bd = new PDO($dsn, $config['bd']['login'], $config['bd']['mdp']);
 	// boucle sur les séries
 	foreach ($indic['series'] as $nomSerie => $serie) {
+		if (serieDesactivee($nomSerie)) continue;
 		// exécution de la requête
 		// @TODO remplir le cache tout de même en cas d'échec, pour ne pas
 		// réessayer trop souvent
@@ -120,6 +129,11 @@ function calculerNomFichierCache($nomIndicateur) {
 	$fichier = $dossierCache . '/munin-floradata-' . $nomIndicateur . '.cache';
 	//echo "fichier cache: [$fichier]\n";
 	return $fichier;
+}
+
+/** retourne true si la série est désactivée (son nom commence par '_') */
+function serieDesactivee($nomSerie) {
+	return substr($nomSerie,0,1) == '_';
 }
 
 /** écrit un message d'erreur sur la sortie d'erreur et quitte le programme

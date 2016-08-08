@@ -1,0 +1,108 @@
+{
+	"champsmanquants": {
+		"intervalle": "3600",
+		"config": [
+			"graph_title Champs manquants ou mal remplis",
+			"graph_vlabel nombre"
+		],
+		"series": {
+			"_total": {
+				"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1",
+				"config": {
+					"label": "obs total",
+					"info": "Toutes les obs",
+					"draw": "LINE2"
+				}
+			},
+			"date": {
+				"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND (date_observation = '' OR date_observation IS NULL or date_observation = '0000-00-00')",
+				"config": {
+					"label": "date vide",
+					"info": "Obs ayant une date NULL ou '' ou '0000-00-00'",
+					"draw": "LINE2"
+				}
+			},
+			"auteurnoninscrit": {
+				"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND (ce_utilisateur NOT REGEXP '^-?[0-9]+$')",
+				"config": {
+					"label": "auteur non inscrit",
+					"info": "Obs ayant un auteur non inscrit",
+					"draw": "LINE2"
+				}
+			},
+			"auteursansemail": {
+				"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND (ce_utilisateur NOT REGEXP '^-?[0-9]+$' AND ce_utilisateur NOT REGEXP '^.+@.+$')",
+				"config": {
+					"label": "auteur sans email",
+					"info": "Obs ayant un auteur non inscrit et n'ayant pas fourni son adresse email",
+					"draw": "LINE2"
+				}
+			},
+			"coord": {
+				"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND (latitude IS NULL OR latitude = '' OR longitude IS NULL OR longitude = '')",
+				"config": {
+					"label": "coordonnees vides",
+					"info": "Obs ayant des coordonnees NULL ou ''",
+					"draw": "LINE2"
+				}
+			},
+			"localite": {
+				"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND (latitude IS NULL OR latitude = '' OR latitude = 0 OR longitude IS NULL OR longitude = '' OR longitude = 0) AND (ce_zone_geo IS NULL OR ce_zone_geo = '') AND (zone_geo IS NULL OR zone_geo = '')",
+				"config": {
+					"label": "localite vide",
+					"info": "Obs ayant des coordonnees NULL ou '', et une [ce_]zone_geo NULL ou ''",
+					"draw": "LINE2"
+				}
+			},
+			"espece": {
+				"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND (nom_sel_nn IS NULL OR nom_sel_nn = '')",
+				"config": {
+					"label": "espece non liee",
+					"info": "Obs ayant un nom_sel_nn NULL ou ''",
+					"draw": "LINE2"
+				}
+			},
+			"referentiel": {
+				"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND (nom_referentiel IS NULL OR nom_referentiel = '' OR nom_referentiel REGEXP '^autre.*$')",
+				"config": {
+					"label": "referentiel vide",
+					"info": "Obs ayant un nom_referentiel NULL, '' ou 'autre*'",
+					"draw": "LINE2"
+				}
+			}
+		}
+	},
+	"incoherences": {
+		"intervalle": "3600",
+		"config": [
+			"graph_title Champs incoherents",
+			"graph_vlabel nombre"
+		],
+		"series": {
+			"_total": {
+				"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1",
+				"config": {
+					"label": "obs total",
+					"info": "Toutes les obs",
+					"draw": "LINE2"
+				}
+			},
+			"datesinversees": {
+				"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND date_transmission < date_observation",
+				"config": {
+					"label": "dates inversees",
+					"info": "Obs ayant date_transmission < date_observation",
+					"draw": "LINE2"
+				}
+			},
+			"_paysselonref": {
+				"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND ",
+				"config": {
+					"label": "pays selon ref",
+					"info": "Obs ayant un pays incoherent par rapport au referentiel",
+					"draw": "LINE2"
+				}
+			}
+		}
+	}
+}
