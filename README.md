@@ -8,7 +8,7 @@ Chaque **indicateur** peut afficher plusieurs valeurs sur le même graphe : ce s
 
 Chaque **indicateur** a un titre, un label pour l'axe des ordonnées, et un intervalle de rafraîchissement, en secondes. Munin interroge les sondes toutes les 300s (5mn), mais un système de cache permet d'augmenter le délai, pour ne pas exécuter trop souvent des requêtes coûteuses en temps et en ressources.
 
-Le cache est configuré dans `config.json`; s'assurer que le dossier renseigné existe et que l'utilisateur Munin a le droit d'écrire dedans.
+Le cache est configuré dans `config.json`; s'assurer que le dossier renseigné existe et que l'utilisateur Munin a le droit d'écrire dedans. Si le dossier de cache commence par `/tmp/`, le programme tentera de le créer.
 
 Chaque **série** possède une configuration propre (nom court, nom détaillé, type de ligne à tracer), et une **requête**.
 

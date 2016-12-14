@@ -55,7 +55,14 @@ if ($argc > 1 && $argv[1] == 'config') {
 // dossier de cache pour la temporisation
 $dossierCache = $config['cache'];
 if (!is_dir($dossierCache) || !is_writable($dossierCache)) {
-	erreur("dossier cache inexistant ou pas le droit d'écrire dedans");
+	// si le dossier de cache est dans /tmp, on tente de le créer (redémarrage-proof)
+	if (substr($dossierCache, 0, 5) == '/tmp/') {
+		if (! mkdir($dossierCache, 0777, true)) {
+			erreur("impossible de créer le dossier cache [$dossierCache]");
+		}
+	} else {
+		erreur("dossier cache inexistant ou pas le droit d'écrire dedans");
+	}
 }
 // intervalle plus grand que les 300 secondes de Munin < 2.0 ?
 $intervalle = false;
