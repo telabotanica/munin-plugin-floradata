@@ -168,6 +168,14 @@
 					"draw": "LINE2"
 				}
 			},
+			"nnrbdtfx": {
+				"requete": "SELECT count(*) as val FROM cel_obs c LEFT JOIN tb_eflore.bdtfx_v4_01 e ON e.num_nom = c.nom_sel_nn WHERE c.nom_sel_nn REGEXP '^[0-9]+$' AND c.nom_ret_nn != e.num_nom_retenu",
+				"config": {
+					"label": "nnr incorrect (bdtfx_v4_01)",
+					"info": "Obs dont le nnr ne correspond pas a celui de bdtfx_v4_01 pour le nn en cours",
+					"draw": "LINE2"
+				}
+			},
 			"_paysselonref": {
 				"requete": "SELECT count(*) as val FROM cel_obs WHERE transmission = 1 AND ",
 				"config": {
