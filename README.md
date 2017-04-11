@@ -24,6 +24,8 @@ Pour installer ce "plugin" dans Munin, créer les liens symboliques dans `/etc/m
 # munin-run floradata_champsmanquants config
 ```
 
+Si vous ajoutez / retirez une série dans un indicateur existant, il se peut que `munin-run` ne fasse pas apparaître le changement : il faut alors supprimer le fichier de cache correspondant à l'indicateur.
+
 Lorsque ça fonctionne, relancer le nœud Munin :
 ```
 # service munin-node restart
